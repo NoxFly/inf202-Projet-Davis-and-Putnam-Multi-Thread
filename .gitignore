@@ -1,0 +1,3 @@
+# ignore cache and vsc config
+*/__pycache__
+*/.vscode
