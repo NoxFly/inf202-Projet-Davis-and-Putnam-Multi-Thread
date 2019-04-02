@@ -11,7 +11,7 @@ avec l'option `-s`: sequentielle
 
 pour chaque fichier mit en argument, affiche (exemple avec **program2**):
 
-###**Array:**
+### **Array:**
 
 /  |   ID    | constante    | dependance 1    | dependance 2 | dependance 3
 -- | ------- | ------------ | --------------- | ------------ | -------------
