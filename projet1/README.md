@@ -54,9 +54,12 @@ et suivant l'option mit en argument:
 
 ### **Execution parallèle:**
 
-/      | Thd 1 | Thd2 | Thd3 | Thd4
--------|-------|------|------|------
-task 1 | 0     | 1    | 2    | 3
+/      | Thd 1  | Thd2  | Thd3  | Thd4
+-------|--------|-------|-------|-------
+task 1 | 0      | False | False | False
+task 2 | 1      | False | False | False
+task 3 | 2      | False | False | False
+task 4 | 3      | False | False | False
 
 
 
