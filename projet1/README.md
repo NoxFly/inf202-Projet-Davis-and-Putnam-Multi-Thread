@@ -72,8 +72,30 @@ task 4 | 3      | False | False | False
 les Tableaux **after**, **before** et **execution sequentielle** appliqués à la fonction **afficheRelation** sont affiché comme suit (les `0` sont remplacés par des `*` et les `1` par des `<`) :
 
 /  | 0 | 1 | 2 | 3
----|---|---|---|-
+---|---|---|---|---
 0  | * | < | < | <
 1  | * | * | < | <
 2  | * | * | * | <
 3  | * | * | * | *
+
+### Memoire
+
+affiche chaque ligne d'execution de façon séparé avec l'id de la ligne et sa constante.
+
+si c'est son tour d'execution, alors sa constante devient const(id(n)) + const(id(n-1)) (const affichée)
+
+donc pour:
+* x3: 0 + 1 = 1
+* x7: 3 + const(x3) = 3 + 1 = 4
+* x5: 0 + const(x7) = 0 + 4 = 4
+* x0: 11 + const(x5) = 11 + 4 = 15
+
+**Résultat:**
+
+tache | id1 + const1 | id2 + const2 | id3 + const3 | id4 + const4
+------|--------------|--------------|--------------|-------------
+-1    | x3: 0        | x7: 0        | x5: 0        | x0: 0
+0     | [[ x3: 1 ]]  | x7: 0        | x5: 0        | x0: 0
+1     | x3: 1        | [[ x7: 4 ]]  | x5: 0        | x0: 0
+2     | x3: 1        | x7: 4        | [[ x5: 4 ]]  | x0: 0
+3     | x3: 1        | x7: 4        | x5: 4        | x0: 15
