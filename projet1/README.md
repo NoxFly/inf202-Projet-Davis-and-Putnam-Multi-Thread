@@ -54,6 +54,12 @@ et suivant l'option mit en argument:
 
 ### **Execution parallèle:**
 
+Si le processeur a 4 coeurs (pour simplifier l'affichage)
+
+Thd = Thread, chaque coeur/thread pouvant executer une tâche
+
+Chaque executable étant dépendant d'un seul ou plusieurs autre(s) executable(s) se retrouve dans le même Thread, et s'executera après sa dépendance
+
 /      | Thd 1  | Thd2  | Thd3  | Thd4
 -------|--------|-------|-------|-------
 task 1 | 0      | False | False | False
