@@ -13,7 +13,7 @@ pour chaque fichier mit en argument, affiche (exemple avec **program2**):
 
 Array:
 
-   |   ID    | constante    | dependance 1    | dependance 2 | dependance 3
+/  |   ID    | constante    | dependance 1    | dependance 2 | dependance 3
 -- | ------- | ------------ | --------------- | ------------ | -------------
 0  |   3     | 1            | -1              | -1           | -1
 1  |   7     | 3            | 3               | -1           | -1
@@ -22,7 +22,7 @@ Array:
 
 Before:
 
-   | 0 | 1 | 2 | 3
+/  | 0 | 1 | 2 | 3
 ---|---|---|---|---
 0  | 0 | 1 | 0 | 0
 1  | 0 | 0 | 1 | 0
@@ -31,7 +31,7 @@ Before:
 
 After:
 
-   | 0 | 1 | 2 | 3
+/  | 0 | 1 | 2 | 3
 ---|---|---|---|---
 0  | 0 | 1 | 1 | 1
 1  | 0 | 0 | 1 | 1
@@ -42,7 +42,7 @@ et suivant l'option mit en argument:
 
 Execution séquentielle:
 
-   | 0 | 1 | 2 | 3
+/  | 0 | 1 | 2 | 3
 ---|---|---|---|---
 0  | 0 | 1 | 1 | 1
 1  | 0 | 0 | 1 | 1
@@ -53,13 +53,13 @@ Execution séquentielle:
 
 Execution parallèle
 
-       | Thd 1 | Thd2 | Thd3 | Thd4
+/      | Thd 1 | Thd2 | Thd3 | Thd4
 -------|-------|------|------|------
 task 1 | 0     | 1    | 2    | 3
 
 les Tableaux **after**, **before** et **execution sequentielle** appliqués à la fonction __afficheRelation__ sont affiché comme suit (les `0` sont remplacés par des `*` et les `1` par des `<`) :
 
-  | 0 | 1 | 2 | 3
+/  | 0 | 1 | 2 | 3
 ---|---|---|---|-
 0  | * | < | < | <
 1  | * | * | < | <
