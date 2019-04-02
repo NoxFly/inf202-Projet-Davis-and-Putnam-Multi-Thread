@@ -150,7 +150,7 @@ def Placement(arr):
 
     nb_dep = [sum(getCol(i, arr)) for i in range(arr_len)]
     rest = deepcopy(nb_dep)
-    print("Tableau des dépendances:",nb_dep)
+    #print("Tableau des dépendances:",nb_dep)
     
 
     for each_line in range(arr_len):
@@ -198,7 +198,6 @@ def Placement(arr):
             if y == -1:
                 placement.append([False for i in range(threads)])
                 y = len(placement)-1
-                print(idx_nb)
 
         placement[y][x] = idx_nb
     return placement
