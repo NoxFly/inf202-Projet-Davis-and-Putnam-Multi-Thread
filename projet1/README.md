@@ -13,7 +13,7 @@ pour chaque fichier mit en argument, affiche (exemple avec **program2**):
 
 Array:
 /  |   ID    | constante    | dependance 1    | dependance 2 | dependance 3
----|---------|--------------|-----------------|--------------|--------------
+-- | ------- | ------------ | --------------- | ------------ | -------------
 0  |   3     | 1            | -1              | -1           | -1
 1  |   7     | 3            | 3               | -1           | -1
 2  |   5     | 0            | 7               | -1           | -1
