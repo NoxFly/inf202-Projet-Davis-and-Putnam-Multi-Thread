@@ -123,9 +123,9 @@ def affichePlacee(placee):
     print("\n")
 
 def affichePlacement(placement):
-    header = "       | "
+    header = "         | "
     for i in range(len(placement)):
-        row = "task "+str(i+1)+" | "
+        row = "task "+str(i+1)+(" "*(4 - len(str(i+1))))+"| "
         for j in range(len(placement[i])):
             if i==0:
                 header += "Thd "+str(j+1) + " | "
@@ -137,32 +137,70 @@ def affichePlacement(placement):
 
 def Placement(arr):
     arr = progDepT(progDep(arr))
-    L = len(arr)
-    placee = zeros(L, False)
+    arr_len = len(arr)
+
+    placee = zeros(arr_len, False)
     verifyUnused(arr, placee)
+
     placement = [[False for i in range(threads)]]
     
     idx_nb = 0
-    i = 0
-    j = -1
+    row = 0
+    col = -1
 
-    nb_dep = [sum(getCol(i, arr)) for i in range(L)]
-    a = deepcopy(nb_dep)
-    #print("Tableau des dépendances:",nb_dep)
+    nb_dep = [sum(getCol(i, arr)) for i in range(arr_len)]
+    rest = deepcopy(nb_dep)
+    print("Tableau des dépendances:",nb_dep)
+    
 
-    for k in range(L):
-        j += 1
+    for each_line in range(arr_len):
+        x = 0
+        y = -1
+        nb, idx_nb = min(rest)
 
-        if i+2 > len(placement) and j == threads:
-            placement.append([False for j in range(threads)])
+        # if 0 dependency
+        if nb == 0:
+            col += 1
 
-        if j == threads:
-            j = 0
-            i += 1
+            if col == threads:
+                col = 0
+                row += 1
 
-        nb, idx_nb = min(a)
+                if row+1 > len(placement):
+                    placement.append([False for i in range(threads)])
+            x = col
+            y = row
+        else:
+            # if one dependency or more
+            dependency_i = 0 # first dependency (can be indirect)
+            dependency_f = 0 # last dependency (direct)
+            for line in range(arr_len):
+                if arr[line][idx_nb] == 1:
+                    dependency_f = line
+                if arr[arr_len-line-1][idx_nb] == 1:
+                    dependency_i = arr_len-line-1
 
-        placement[i][j] = idx_nb
+            # find the right dependency's column
+            right_col_idx = -1
+            for line in range(len(placement)):
+                for column in range(len(placement[0])):
+                    if placement[line][column] == dependency_f and type(placement[line][column]) == int:
+                        right_col_idx = column
+            
+            # find the right line to place executable line
+            for line in range(len(placement)):
+                if right_col_idx != -1:
+                    if placement[line][right_col_idx] == False and type(placement[line][right_col_idx]) == bool and y==-1:
+                        x = right_col_idx
+                        y = line
+
+            # if the iterator reached the limit, then add new line to placement array
+            if y == -1:
+                placement.append([False for i in range(threads)])
+                y = len(placement)-1
+                print(idx_nb)
+
+        placement[y][x] = idx_nb
     return placement
 
 
