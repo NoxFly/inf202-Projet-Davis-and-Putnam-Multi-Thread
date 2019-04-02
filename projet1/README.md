@@ -43,12 +43,12 @@ et suivant l'option mit en argument:
 
 ### **Execution séquentielle:**
 
-/  | 0 | 1 | 2 | 3
----|---|---|---|---
-0  | 0 | 1 | 1 | 1
-1  | 0 | 0 | 1 | 1
-2  | 0 | 0 | 0 | 1
-3  | 0 | 0 | 0 | 0
+/  | 0     | 1     | 2     | 3
+---|-------|-------|-------|-------
+0  | False | True  | True  | True
+1  | False | False | True  | True
+2  | False | False | False | True
+3  | False | False | False | False
 
 (toutes les case en dessus de la dioganole sont **True** sinon **False**)
 

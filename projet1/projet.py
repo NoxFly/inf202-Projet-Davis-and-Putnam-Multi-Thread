@@ -72,18 +72,18 @@ def progDep(listoflists):
 
 # transitive closure
 def progDepT(listoflists):
-    L_return = deepcopy(listoflists)
-    l = len(L_return)
+    arr = deepcopy(listoflists)
+    l = len(arr)
     for i in range(l):
         for j in range(l):
             for k in range(l):
-                if L_return[i][j] == 1 and L_return[j][k] == 1:
-                    L_return[i][k] = 1
-    return L_return
+                if arr[i][j] and arr[j][k]:
+                    arr[i][k] = True if type(arr[i][j]) == bool else 1
+    return arr
 
 # sequential relation
 def relationSequentielle(L, R):
-    arr = R([[1 if i==j-1 else 0 for j in range(L)] for i in range(L)])
+    arr = R([[True if i==j-1 else False for j in range(L)] for i in range(L)])
     return arr
 
 ######### 3 ###########
@@ -139,8 +139,9 @@ def Placement(arr):
     arr = progDepT(progDep(arr))
     arr_len = len(arr)
 
-    placee = zeros(arr_len, False)
-    verifyUnused(arr, placee)
+    # unused
+    #placee = zeros(arr_len, False)
+    #verifyUnused(arr, placee)
 
     placement = [[False for i in range(threads)]]
     
@@ -190,7 +191,7 @@ def Placement(arr):
             # find the right line to place executable line
             for line in range(len(placement)):
                 if right_col_idx != -1:
-                    if placement[line][right_col_idx] == False and type(placement[line][right_col_idx]) == bool and y==-1:
+                    if type(placement[line][right_col_idx]) == bool and y==-1:
                         x = right_col_idx
                         y = line
 
@@ -203,6 +204,48 @@ def Placement(arr):
     return placement
 
 
+######### 4 ###########
+
+def calculMemoire(arr):
+    placement = Placement(arr)
+    #affichePlacement(placement)
+    V = len(arr) # nombre de variables
+    l = len(placement)+1 # number of executed lines on placement array + 1 (initialization)
+    
+    ID = getCol(0, arr)
+    const = getCol(1, arr)
+    memoire = []
+
+    for i in range(l):
+        row = []
+        for j in range(V*3):
+            idx = int(j/3)
+            if j%3 == 0:
+                row.append(ID[idx])
+            elif j%3 == 1:
+                row.append(1 if i-1>=idx else 0)
+            elif j%3 == 2:
+                row.append(const[idx] + (0 if i<=0 or j<=2 else memoire[i-1][j-3]) if i>=j/3 else 0)
+        memoire.append(row)
+    printProgram(memoire)
+    return memoire
+
+def afficheMemoire(M):
+    exec_line = -1
+    l = len(M)
+    l2 = int(len(M[0])/3)
+
+    print("Memoire:")
+    for line in range(l):
+        text_line = "{}{}:  ".format(exec_line, " "*(3-len(str(exec_line))))
+        for j in range(l2):
+            txt = "x{}: {}".format(M[line][j*3], M[line][j*3+2])
+            if exec_line > -1 and j == exec_line:
+                txt = "[[ "+txt+" ]]"
+            text_line += txt
+            text_line += " "*(15-len(txt))
+        print(text_line)
+        exec_line += 1
 
 
 
@@ -226,11 +269,11 @@ def printAllArrays(program):
 
     if option == "-s":
         print("Execution sequentielle:")
-        printProgram(afficheRelation(relationSequentielle(4, progDepT)))
+        printProgram(relationSequentielle(4, progDepT))
     else:
         print("Execution parallèle:")
         affichePlacement(Placement(arr))
-
+"""
 # for all given arguments
 for i in range(start,len(sys.argv)):
     url = "./programs/"+sys.argv[i]+".txt"
@@ -241,3 +284,5 @@ for i in range(start,len(sys.argv)):
         exit(0)
 
     printAllArrays(sys.argv[i])
+"""
+afficheMemoire(calculMemoire(readProgram("./programs/"+sys.argv[1]+".txt")))
