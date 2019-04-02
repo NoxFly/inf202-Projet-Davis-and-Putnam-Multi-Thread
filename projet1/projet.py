@@ -137,7 +137,6 @@ def affichePlacement(placement):
 
 def Placement(arr):
     arr = progDepT(progDep(arr))
-    printProgram(arr)
     L = len(arr)
     placee = zeros(L, False)
     verifyUnused(arr, placee)
@@ -145,27 +144,23 @@ def Placement(arr):
     
     idx_nb = 0
     i = 0
-    j = 0
+    j = -1
 
-    idx_already_saw = []
     nb_dep = [sum(getCol(i, arr)) for i in range(L)]
-    #print("nb de dependances:",nb_dep)
     a = deepcopy(nb_dep)
+    #print("Tableau des dépendances:",nb_dep)
 
     for k in range(L):
-        #print(a)
+        j += 1
+
+        if i+2 > len(placement) and j == threads:
+            placement.append([False for j in range(threads)])
+
+        if j == threads:
+            j = 0
+            i += 1
+
         nb, idx_nb = min(a)
-        #print("\tmin:",nb)
-
-        while(placement[i][j] != False or type(placement[i][j]) != bool):
-            j += 1
-
-            if i+2 > len(placement) and j == threads:
-                placement.append([False for j in range(threads)])
-
-            if j == threads:
-                j = 0
-                i += 1
 
         placement[i][j] = idx_nb
     return placement
