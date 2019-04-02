@@ -7,6 +7,7 @@ utilise 2 méthodes:
 * parallèle
 
 par défaut: parallèle
+
 avec l'option `-s`: sequentielle
 
 pour chaque fichier mit en argument, affiche (exemple avec **program2**):
