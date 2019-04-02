@@ -58,6 +58,8 @@ et suivant l'option mit en argument:
 -------|-------|------|------|------
 task 1 | 0     | 1    | 2    | 3
 
+
+
 les Tableaux **after**, **before** et **execution sequentielle** appliqués à la fonction **afficheRelation** sont affiché comme suit (les `0` sont remplacés par des `*` et les `1` par des `<`) :
 
 /  | 0 | 1 | 2 | 3
