@@ -11,7 +11,7 @@ avec l'option `-s`: sequentielle
 
 pour chaque fichier mit en argument, affiche (exemple avec **program2**):
 
-**Array:**
+###**Array:**
 
 /  |   ID    | constante    | dependance 1    | dependance 2 | dependance 3
 -- | ------- | ------------ | --------------- | ------------ | -------------
@@ -20,7 +20,7 @@ pour chaque fichier mit en argument, affiche (exemple avec **program2**):
 2  |   5     | 0            | 7               | -1           | -1
 3  |   0     | 11           | 5               | -1           | -1
 
-**Before:**
+###**Before:**
 
 /  | 0 | 1 | 2 | 3
 ---|---|---|---|---
@@ -29,7 +29,7 @@ pour chaque fichier mit en argument, affiche (exemple avec **program2**):
 2  | 0 | 0 | 0 | 1
 3  | 0 | 0 | 0 | 0
 
-**After:**
+###**After:**
 
 /  | 0 | 1 | 2 | 3
 ---|---|---|---|---
@@ -40,7 +40,7 @@ pour chaque fichier mit en argument, affiche (exemple avec **program2**):
 
 et suivant l'option mit en argument:
 
-**Execution séquentielle:**
+###**Execution séquentielle:**
 
 /  | 0 | 1 | 2 | 3
 ---|---|---|---|---
@@ -51,7 +51,7 @@ et suivant l'option mit en argument:
 
 (toutes les case en dessus de la dioganole sont **True** sinon **False**)
 
-**Execution parallèle:**
+###**Execution parallèle:**
 
 /      | Thd 1 | Thd2 | Thd3 | Thd4
 -------|-------|------|------|------
