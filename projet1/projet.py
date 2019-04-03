@@ -43,7 +43,8 @@ def readProgram(filename):
         arr.append(row_int)
 
     fd.close()
-    return arr
+    if verifyArray(arr): return arr
+    else: exit(0)
 
 # print array
 def printProgram(listoflists):
@@ -169,7 +170,7 @@ def findDepCol(placement, dependency_f):
     for line in range(len(placement)):
         for column in range(len(placement[0])):
             if placement[line][column] == dependency_f and type(placement[line][column]) == int:
-                right_col_idx = column
+                rigsht_col_idx = column
     return right_col_idx
 
 def findPlace(placement, arr, idx_nb, nb_dep):
@@ -311,6 +312,29 @@ def afficheMemoire(M):
         exec_line += 1
 
 
+###### BONUS : verify array correspond to some criteria
+
+def verifyArray(arr):
+    # first: verify the array has the correct number of elements:
+    # ID | CST | nb of dependencies according to number of rows -1 (itself)
+    # second: verify the dependencies of a row is well linked to an existing row
+    l = len(arr)
+
+    for i in range(l):
+        if len(arr[i]) != l + 1:
+            print("Array doesn't have correct number of elements line",i+1,"\n")
+            return False
+        if l > 1:
+            for j in range(2, len(arr[i])):
+                if arr[i][j] != -1:
+                    exists = False
+                    for k in range(l):
+                        if arr[k][0] == arr[i][j]:
+                            exists = True
+                    if not exists:
+                        print("The dependency number",j-1,"of the line",i+1,"which reffered to the line",arr[i][j],"does not exists\n")
+                        return False
+    return True
 
 
 # OUTPUT #
@@ -322,7 +346,7 @@ def afficheMemoire(M):
 # sequential or parallel array
 # and then the memory array
 def printAllArrays(program):
-    print("########### "+program+" ###########")
+    print("\n########### "+program+" ###########")
 
     arr = readProgram("programs/"+program+".txt")
 
