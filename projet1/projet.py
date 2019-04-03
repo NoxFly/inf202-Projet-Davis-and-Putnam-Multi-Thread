@@ -108,12 +108,6 @@ def getCol(index, array):
     if len(array)>0 and index < len(array):
         return [array[i][index] for i in range(len(array))]
 
-# calcul the sum of a 1D array
-def sum(arr):
-    n = 0
-    for i in arr: n += i 
-    return n
-
 # calcul the minimum of an array, if the number is greater than -1
 def min(arr):
     # default minimum (it can be -1)
@@ -170,7 +164,7 @@ def findDepCol(placement, dependency_f):
     for line in range(len(placement)):
         for column in range(len(placement[0])):
             if placement[line][column] == dependency_f and type(placement[line][column]) == int:
-                rigsht_col_idx = column
+                right_col_idx = column
     return right_col_idx
 
 def findPlace(placement, arr, idx_nb, nb_dep):
