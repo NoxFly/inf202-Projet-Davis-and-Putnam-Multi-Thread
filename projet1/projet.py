@@ -163,6 +163,46 @@ def affichePlacement(placement):
         print(row)
     print("\n")
 
+def findDepCol(placement, dependency_f):
+    # find the right dependency's column
+    right_col_idx = -1
+    for line in range(len(placement)):
+        for column in range(len(placement[0])):
+            if placement[line][column] == dependency_f and type(placement[line][column]) == int:
+                right_col_idx = column
+    return right_col_idx
+
+def findPlace(placement, arr, idx_nb, nb_dep):
+    # coords to place the executable
+    x = 0
+    y = -1
+    l = len(arr)
+    dependency_f = 0 # last dependency (direct)
+    for line in range(l):
+        if arr[line][idx_nb] == 1:
+            dependency_f = line
+    
+    right_col_idx = findDepCol(placement, dependency_f)
+    
+    # dependency not even placed: we place it before (recursivity)
+    if right_col_idx == -1:
+        nb_dep[dependency_f] = -1
+        findPlace(placement, arr, dependency_f, nb_dep)
+        right_col_idx = findDepCol(placement, dependency_f)
+
+    # find the right line to place executable line
+    for line in range(len(placement)):
+        if type(placement[line][right_col_idx]) == bool and y==-1:
+            x = right_col_idx
+            y = line
+
+    # if the iterator reached the limit, then add new line to placement array
+    if y == -1:
+        placement.append([False for i in range(threads)])
+        y = len(placement)-1
+    
+    placement[y][x] = idx_nb
+
 # place all executable rows in the correct order, depending of their dependencies
 def Placement(arr):
     # need the transitive closure
@@ -194,9 +234,6 @@ def Placement(arr):
     
 
     for each_line in range(arr_len):
-        # coords to place the executable
-        x = 0
-        y = -1
         # get the row to execute in first
         nb, idx_nb = min(rest)
 
@@ -214,35 +251,11 @@ def Placement(arr):
                 # if the Placement array have not longer any place, we create a new row
                 if row+1 > len(placement):
                     placement.append([False for i in range(threads)])
-            x = col
-            y = row
+            placement[row][col] = idx_nb
         else:
             # if one dependency or more
-            dependency_f = 0 # last dependency (direct)
-            for line in range(arr_len):
-                if arr[line][idx_nb] == 1:
-                    dependency_f = line
+            findPlace(placement, arr, idx_nb, nb_dep)
 
-            # find the right dependency's column
-            right_col_idx = -1
-            for line in range(len(placement)):
-                for column in range(len(placement[0])):
-                    if placement[line][column] == dependency_f and type(placement[line][column]) == int:
-                        right_col_idx = column
-            
-            # find the right line to place executable line
-            for line in range(len(placement)):
-                if right_col_idx != -1:
-                    if type(placement[line][right_col_idx]) == bool and y==-1:
-                        x = right_col_idx
-                        y = line
-
-            # if the iterator reached the limit, then add new line to placement array
-            if y == -1:
-                placement.append([False for i in range(threads)])
-                y = len(placement)-1
-
-        placement[y][x] = idx_nb
     return placement
 
 
