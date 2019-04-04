@@ -87,9 +87,7 @@ def progDepT(listoflists):
         for j in range(l):
             for k in range(l):
                 # if its 1 or True for both
-                if after[i][j] and after[j][k]:
-                    # then the relation is weither True or 1 depending the variable type
-                    after[i][k] = True if type(after[i][j]) == bool else 1
+                after[j][k] = after[j][k] or (after[j][i] and after[i][k])
     return after
 
 # sequential relation
