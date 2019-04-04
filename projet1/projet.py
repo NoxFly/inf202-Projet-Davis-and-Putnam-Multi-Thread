@@ -99,7 +99,6 @@ def relationSequentielle(L, R):
     return R([[True if i==j-1 else False for j in range(L)] for i in range(L)])
 
 
-
 ######### 3 ###########
 
 # return the column n of an array
