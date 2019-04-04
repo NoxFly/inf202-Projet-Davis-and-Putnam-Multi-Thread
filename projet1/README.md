@@ -1,6 +1,6 @@
 # PROJET 1 - transitivité
 
-commande : `python projet.py (-s) program1 [ program2 program3... ]`
+commande : `python projet.py (-s) program1 [program2 program3 ...]`
 
 utilise 2 méthodes:
 * sequentielle
@@ -98,4 +98,4 @@ tache | id1 + const1 | id2 + const2 | id3 + const3 | id4 + const4
 0     | [[ x3: 1 ]]  | x7: 0        | x5: 0        | x0: 0
 1     | x3: 1        | [[ x7: 4 ]]  | x5: 0        | x0: 0
 2     | x3: 1        | x7: 4        | [[ x5: 4 ]]  | x0: 0
-3     | x3: 1        | x7: 4        | x5: 4        | x0: 15
+3     | x3: 1        | x7: 4        | x5: 4        | [[ x0: 15 ]]

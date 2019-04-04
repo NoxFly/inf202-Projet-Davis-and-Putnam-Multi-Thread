@@ -8,7 +8,7 @@ from copy import deepcopy
 argc = len(sys.argv) - 1
 
 # number of thread
-threads = 8
+threads = 11
 
 # default option is nothing
 option = ""
@@ -17,10 +17,9 @@ start = 1
 
 # not one or two argument : need a file name
 if argc == 0 : exit(0)
-elif argc > 1:
-    option = sys.argv[1]
-    if option != "-s": exit(0)
+elif argc > 1 and sys.argv[1] == "-s":
     start = 2
+    option = "-s"
 
 
 ########################################################################################
@@ -43,6 +42,7 @@ def readProgram(filename):
         arr.append(row_int)
 
     fd.close()
+    #return arr
     if verifyArray(arr): return arr
     else: exit(0)
 
@@ -70,7 +70,7 @@ def progDep(listoflists):
     before = zeros(l)
     for i in range(l):
         # start to second range because we don't need to take the ID and constant value of the row
-        for j in range(2, l2-2):
+        for j in range(2, l2):
             if listoflists[i][j] != -1:
                 for k in range(l):
                     # if the number of the dependency correspond to the ID, then note it as a relation
@@ -96,8 +96,7 @@ def progDepT(listoflists):
 def relationSequentielle(L, R):
     # create a LxL array with the i-1=j diagonal filled by 1 and all others by 0
     # then apply the transitive closure
-    arr = R([[True if i==j-1 else False for j in range(L)] for i in range(L)])
-    return arr
+    return R([[True if i==j-1 else False for j in range(L)] for i in range(L)])
 
 
 
@@ -124,25 +123,6 @@ def min(arr):
     # return the minimum and its index in the array
     return m, j
 
-# /!\ unused function
-# change each 0 by True, like that we do not have to check them when we'll execute the program
-def verifyUnused(arr, placee):
-    l = len(arr)
-    for i in range(l):
-        for j in range(l):
-            if arr[i][j] == 0:
-                placee[i][j] = True
-
-# /!\ unused function
-# display the Placee array
-def affichePlacee(placee):
-    for i in range(len(placee)):
-        row = "| "
-        for j in range(len(placee)):
-            row += str(placee[i][j]) + (" "*(6-len(str(placee[i][j])))) + "| "
-        print(row)
-    print("\n")
-
 # display Placement array
 def affichePlacement(placement):
     header = "         | "
@@ -161,11 +141,13 @@ def affichePlacement(placement):
 def findDepCol(placement, dependency_f):
     # find the right dependency's column
     right_col_idx = -1
+    right_row_idx = 0
     for line in range(len(placement)):
         for column in range(len(placement[0])):
             if placement[line][column] == dependency_f and type(placement[line][column]) == int:
                 right_col_idx = column
-    return right_col_idx
+                right_row_idx = line
+    return right_row_idx, right_col_idx
 
 def findPlace(placement, arr, idx_nb, nb_dep):
     # coords to place the executable
@@ -177,24 +159,28 @@ def findPlace(placement, arr, idx_nb, nb_dep):
         if arr[line][idx_nb] == 1:
             dependency_f = line
     
-    right_col_idx = findDepCol(placement, dependency_f)
+    right_row_idx, right_col_idx = findDepCol(placement, dependency_f)
     
     # dependency not even placed: we place it before (recursivity)
     if right_col_idx == -1:
         nb_dep[dependency_f] = -1
         findPlace(placement, arr, dependency_f, nb_dep)
-        right_col_idx = findDepCol(placement, dependency_f)
+        right_row_idx, right_col_idx = findDepCol(placement, dependency_f)
 
     # find the right line to place executable line
-    for line in range(len(placement)):
-        if type(placement[line][right_col_idx]) == bool and y==-1:
-            x = right_col_idx
-            y = line
-
-    # if the iterator reached the limit, then add new line to placement array
-    if y == -1:
+    y = right_row_idx + 1
+    x = right_col_idx
+    if y == len(placement):
         placement.append([False for i in range(threads)])
-        y = len(placement)-1
+    while type(placement[y][x]) != bool:
+        x += 1
+        if x == threads:
+            x = right_col_idx
+            y += 1
+
+            # if the iterator reached the limit, then add new line to placement array
+            if y == len(placement):
+                placement.append([False for i in range(threads)])
     
     placement[y][x] = idx_nb
 
@@ -203,10 +189,6 @@ def Placement(arr):
     # need the transitive closure
     arr = progDepT(progDep(arr))
     arr_len = len(arr)
-
-    # /!\ unused
-    #placee = zeros(arr_len, False)
-    #verifyUnused(arr, placee)
 
     # create the first row filled by False : placed not used yet
     # --> we don't need to create a huge array in one time.
@@ -256,33 +238,30 @@ def Placement(arr):
 
 ######### 4 ###########
 
-def calculMemoire(arr):
-    placement = Placement(arr)
-    V = len(arr)            # number of variables
-    l = len(placement)+1    # number of executed lines on placement array + 1 (initialization)
-    
-    #we could use one 2D array but to make it more understandable
-    ID = getCol(0, arr)     # all ID on 1D array
-    const = getCol(1, arr)  # all const on 1D array
-    memoire = []
+def calculMemoire(arr, placement):
+    after = progDepT(progDep(arr))
 
-    for i in range(l):
-        row = []
-        # each variable need 3 element : (id, bvalue, value) * number of variable
-        for j in range(V*3):
-            # force the int() else it's 4.0 and not 4 (for example)
-            idx = int(j/3)
-            # if it's the ID column
-            if j%3 == 0:
-                row.append(ID[idx])
-            # else if it's the bvalue column
-            elif j%3 == 1:
-                row.append(1 if i-1>=idx else 0)
-            # else if it's the value column
-            elif j%3 == 2:
-                row.append(const[idx] + (0 if i<=0 or j<=2 else memoire[i-1][j-3]) if i>=j/3 else 0)
-        memoire.append(row)
+    len_placement = len(placement)
+    len_placement_i = len(placement[0])
+
+    V = len(arr)            # number of variables
+    l = len_placement+1     # number of executed lines on placement array + 1 (initialization)
+
+    memoire = [[ arr[int(j/3)][0] if j%3==0 else 0 for j in range(V*3)] for i in range(l)]
+
+    for i in range(len_placement):
+        for j in range(len_placement_i):
+            if type(placement[i][j]) != bool:
+                for k in range(i+1, len_placement+1):
+                    id = placement[i][j]
+                    memoire[k][id*3+1] = 1
+                    value = arr[id][1]
+                    for m in range(len(arr)):
+                        if after[m][id] == 1:
+                            value += arr[m][1]
+                    memoire[k][id*3+2] = value
     return memoire
+
 
 # display the memory array
 def afficheMemoire(M):
@@ -290,14 +269,13 @@ def afficheMemoire(M):
     exec_line = -1
     l = len(M)
     l2 = int(len(M[0])/3)
-
     print("Memoire:")
     for line in range(l):
         text_line = "{}{}:  ".format(exec_line, " "*(3-len(str(exec_line))))
         for j in range(l2):
             txt = "x{}: {}".format(M[line][j*3], M[line][j*3+2])
-            # if it's the current time to change this one, [[ x ]]
-            if exec_line > -1 and j == exec_line:
+            # if it's the current time to execute this one, [[ x ]]
+            if line > 0 and M[line][j*3+2] != M[line-1][j*3+2]:
                 txt = "[[ "+txt+" ]]"
             text_line += txt
             # add spaces to be clearest
@@ -313,14 +291,18 @@ def verifyArray(arr):
     # ID | CST | nb of dependencies according to number of rows -1 (itself)
     # second: verify the dependencies of a row is well linked to an existing row
     l = len(arr)
+    dep_number = len(arr[0])
 
     for i in range(l):
-        if len(arr[i]) != l + 1:
-            print("Array doesn't have correct number of elements line",i+1,"\n")
+        if len(arr[i]) != dep_number:
+            print("Array must have same row length\n")
             return False
         if l > 1:
             for j in range(2, len(arr[i])):
                 if arr[i][j] != -1:
+                    if arr[i][j] == arr[i][0]:
+                        print("The line",i,"could not depends of itself")
+                        return False
                     exists = False
                     for k in range(l):
                         if arr[k][0] == arr[i][j]:
@@ -359,9 +341,9 @@ def printAllArrays(program):
         printProgram(relationSequentielle(4, progDepT))
     else:
         print("Execution parallèle:")
-        affichePlacement(Placement(arr))
-    
-    afficheMemoire(calculMemoire(arr))
+        placement = Placement(arr)
+        affichePlacement(placement)
+        afficheMemoire(calculMemoire(arr, placement))
 
 # for all given arguments
 for i in range(start,len(sys.argv)):
