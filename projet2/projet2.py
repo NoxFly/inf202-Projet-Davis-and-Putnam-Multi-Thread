@@ -74,6 +74,18 @@ def printArray(arr):
         for i in arr: print("  "+str(i).replace(",",""))
         print("]")
 
+def ecrireEnsClauses(ensClauses, convSor):
+    # and / or
+    if convSor == 0: clauseSeparator, elementSeparator, brackets = " and ", " or ", ["(",")"]
+    # [[][]]
+    elif convSor == 1: clauseSeparator, elementSeparator, brackets = " ", " ", ["[","]"]
+    # +- | default
+    else: clauseSeparator, elementSeparator, brackets = " + ", "", ["",""]
+
+    ensClauses = clauseSeparator.join(map(str, parseConv2(ensClauses))).replace('[',brackets[0]).replace(']',brackets[1]).replace(',',elementSeparator)
+    if convSor == 1: ensClauses = "[ "+ensClauses+" ]"
+    print(ensClauses)
+
 
 # return atom / -atom
 def occurences(arr, el):
@@ -119,26 +131,16 @@ def internalRepr(matrix):
             internal[j].append(occurences(matrix[j], i+1))
     return internal
 
-
+# return internal representation of file clauses
 def lireEnsClauses(fichEntree, convEnt):
     return internalRepr(getArray(fichEntree, convEnt))
 
-
+# random generation of clauses
 def genAleaEnsClauses(nbClauses, maxNumAtomes, maxLgClauses):
-    matrix = [[randint(1,27) if randrange(-1,2,2) == 1 else -randint(1,27) for j in range(maxLgClauses)] for i in range(nbClauses)]
+    matrix = [[randint(1,26) if randrange(-1,2,2) == 1 else -randint(1,26) for j in range(maxLgClauses)] for i in range(nbClauses)]
     return parseConv1(matrix) if args[1] == 1 else parseConv2(matrix)
 
-def ecrireEnsClauses(ensClauses, convSor):
-    # and / or
-    if convSor == 0: clauseSeparator, elementSeparator, brackets = " and ", " or ", ["(",")"]
-    # [[][]]
-    elif convSor == 1: clauseSeparator, elementSeparator, brackets = " ", " ", ["[","]"]
-    # +- | default
-    else: clauseSeparator, elementSeparator, brackets = " + ", "", ["",""]
 
-    ensClauses = clauseSeparator.join(map(str, parseConv2(ensClauses))).replace('[',brackets[0]).replace(']',brackets[1]).replace(',',elementSeparator)
-    if convSor == 1: ensClauses = "[ "+ensClauses+" ]"
-    print(ensClauses)
 
 # execution
 
