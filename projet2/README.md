@@ -41,10 +41,10 @@ puis le convertit sous la seconde convention :
 
 Enfin, créé et retourne le tableau de représentation interne, et l'affiche avec comme en-tête l'alphabet :
 
-a   |  b  |  c  |  d  |  e  |  f  |  g  | ... |  z
---- | --- | --- | --- | --- | --- | --- | ... | ---
-0   | -1  | 1   | 0   | -1  | -1  | 1   | ... | 0
-1   | 0   | -1  | -1  | 2   | 0   | 1   | ... | 0
+| a   |  b  |  c  |  d  |  e  |  f  |  g  | ... |  z
+| --- | --- | --- | --- | --- | --- | --- | ... | ---
+| 0   | -1  | 1   | 0   | -1  | -1  | 1   | ... | 0
+| 1   | 0   | -1  | -1  | 2   | 0   | 1   | ... | 0
 
 Génère un ensemble de clauses aléatoire, par exemple avec comme paramètres :
 
