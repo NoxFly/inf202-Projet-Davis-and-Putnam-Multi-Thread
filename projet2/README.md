@@ -1,6 +1,7 @@
 # PROJET 2 - Davis et Putnam
 
 binôme : non
+
 Etudiant : Dorian Thivolle
 
 commande : `python projet2.py path/to/file.txt convention`
@@ -17,10 +18,10 @@ Ensuite, génère aléatoirement un ensemble de clauses suivant des constantes d
 
 Si la commande est `python projet2.py data.txt 2`
 Pour un fichier data.txt ayant pour contenu :
-
+```
 3 7 -2 -5 -6
-
 1 5 7 -3 -4 -5
+```
 
 Créé un tableau comme suit :
 ```
@@ -39,10 +40,10 @@ puis le convertit sous la seconde convention :
 ```
 
 Enfin, créé et retourne le tableau de représentation interne, et l'affiche avec comme en-tête l'alphabet :
-a | b | c | d | e | f | g | h | i | j | k | l | m | n | o | p | q | r | s | t | u | v | w | x | y | z
---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---
-0 | -1| 1 | 0 | -1| -1| 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0
-1 | 0 | -1| -1| 2 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0
+a | b  | c  | d  | e  | f  | g | h | i | j | k | l | m | n | o | p | q | r | s | t | u | v | w | x | y | z
+- | -  | -  | -  | -  | -  | - | - | - | - | - | - | - | - | - | - | - | - | - | - | - | - | - | - | - | -
+0 | -1 | 1  | 0  | -1 | -1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0
+1 | 0  | -1 | -1 | 2  | 0  | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0
 
 Génère un ensemble de clauses aléatoire, par exemple avec comme paramètres :
 
