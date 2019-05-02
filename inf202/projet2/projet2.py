@@ -1,18 +1,18 @@
 # projet 2 inf202
-# Dorian THIVOLLE
 
 # imports
 import sys, os, datetime
 from random import randint, randrange
+from copy import deepcopy
 
 # vars
 argc = len(sys.argv) - 1
 args = sys.argv[1:]
 
 # CONSTS
-NB_CLAUSES = 20
-MAX_NUM_ATOM = 26
-MAX_LG_CLAUSE = 10
+NB_CLAUSES = 2
+MAX_NUM_ATOM = 5
+MAX_LG_CLAUSE = 5
 WRITE_TYPE = 0
 NIV_TRACE = 2
 LOG = []
@@ -40,7 +40,8 @@ def verifyInput():
 
 # parse array to conv 1 {1,2,3} | 2D array
 def parseConv1(arr):
-    arr = arr[:]
+    arr = deepcopy(arr)
+    if len(arr) == 0: return arr
     if isinstance(arr[0][0], int): return arr
     for i in range(len(arr)):
         for j in range(len(arr[i])):
@@ -54,7 +55,8 @@ def parseConv1(arr):
 
 # parse array to conv 2 {a,b,c} | 2D array
 def parseConv2(arr):
-    arr = arr[:]
+    arr = deepcopy(arr)
+    if len(arr) == 0: return arr
     if str(arr[0][0]).replace('-','').isalpha(): return arr
     for i in range(len(arr)):
         for j in range(len(arr[i])):
@@ -64,7 +66,7 @@ def parseConv2(arr):
 
 
 # print 1D / 2D array
-def printArray(arr):
+def printArray(arr=[]):
     if len(arr) == 0: return False
     
     if isinstance(arr[0], int):
@@ -74,16 +76,16 @@ def printArray(arr):
         for i in arr: print("  "+str(i).replace(",",""))
         print("]")
 
-
-def stringify(arr):
+# stringify array and organize correctly
+def stringify(arr=[]):
     sArr = '['
     for i in arr:
         sArr += '\n\t'+str(i)
     sArr += '\n]'
     return sArr
 
-
-def ecrireEnsClauses(ensClauses, convSor):
+# print 2D array with convSor
+def ecrireEnsClauses(ensClauses, convSor=1):
     if convSor == 0:        clauseSeparator, elementSeparator, brackets = " and ",  " or", ["(",")"]
     elif convSor == 1:      clauseSeparator, elementSeparator, brackets = " ",      " ",    ["[","]"]
     else:                   clauseSeparator, elementSeparator, brackets = " + ",    "",     ["",""]
@@ -101,7 +103,7 @@ def occurences(arr, el):
     return 2 # both
 
 # alphabetical array
-def printInternalRepr(matrix):
+def printInternalRepr(matrix=[]):
     print("-"*152)
     for i in range(26):
         if i < 25: print(chr(i+97)+"  |  ", end="")
@@ -145,12 +147,12 @@ def lireEnsClauses(fichEntree, convEnt):
     return internalRepr(ensClauses)
 
 # random generation of clauses
-def genAleaEnsClauses(nbClauses, maxNumAtomes, maxLgClauses):
+def genAleaEnsClauses(nbClauses=1, maxNumAtomes=1, maxLgClauses=1):
     matrix = [[randint(1,26) if randrange(-1,2,2) == 1 else -randint(1,26) for j in range(maxLgClauses)] for i in range(nbClauses)]
     return parseConv1(matrix) if args[1] == 1 else parseConv2(matrix)
 
 # write new log file
-def writeLog(content):
+def writeLog(content=''):
     path = "log"
     if not os.path.isdir(path): os.mkdir(path)
     nFiles = len([name for name in os.listdir(path) if os.path.isfile(os.path.join(path, name))]) + 1
@@ -166,12 +168,12 @@ def writeLog(content):
 def log(msg=''):
     LOG.append(msg)
 
-def removeArray(arr, arr2):
+def removeArray(arr, arr2=[]):
     for i in arr2:
         if i in arr: arr.remove(i)
 
 # Davis and Putnam
-def sat(ensClauses, verbose):
+def sat(ensClauses, verbose=0):
     F = ensClauses[:]
     log('\n\n'+('-'*50)+' F :\n'+str(F if args[1]==1 else parseConv2(F)))
         
@@ -277,7 +279,7 @@ def sat(ensClauses, verbose):
 
 
 # function that init then call sat
-def algoDP(ensClauses, nivTraces):
+def algoDP(ensClauses, nivTraces=0):
     LOG = []
     log('LOG Davis & Putnam - '+str(datetime.datetime.now())+'\nEnsemble de clauses :\n'+stringify(ensClauses))
     if sat(parseConv1(ensClauses), nivTraces==2): print("satisfaisable")

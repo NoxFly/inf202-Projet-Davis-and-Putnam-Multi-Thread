@@ -1,9 +1,5 @@
 # PROJET 2 - Davis et Putnam
 
-binôme : non
-
-Etudiant : Dorian Thivolle
-
 commande : `python projet2.py path/to/file.txt convention`
 
 `convention` doit être compris entre 1 et 2.

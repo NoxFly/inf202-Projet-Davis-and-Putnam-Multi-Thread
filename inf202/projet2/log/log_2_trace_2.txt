@@ -1,0 +1,27 @@
+LOG Davis & Putnam - 2019-05-02 17:53:29.675206
+Ensemble de clauses :
+[
+	['-q', 'j', 'o', '-k', '-b']
+	['-l', '-o', 'd', '-y', 'b']
+]
+
+
+-------------------------------------------------- F :
+[['-q', 'j', 'o', '-k', '-b'], ['-l', '-o', 'd', '-y', 'b']]
+F apres la premiere etape: [[-17, 10, 15, -11, -2], [-12, -15, 4, -25, 2]]
+U: []
+Atomes: [17, 10, 15, 11, 2, 12, 4, 25]
+Lit1: [-17, 10, 15, -11, -2, -12, -15, 4, -25, 2]
+Suppression de tous les litteraux de U dans Lit1: [-17, 10, 15, -11, -2, -12, -15, 4, -25, 2]
+Suppression de tous les atomes de U dans Atomes: [17, 10, 15, 11, 2, 12, 4, 25]
+litteral dans la clause C 0 trouve dans Lit1: suppression de la clause C dans F
+litteral dans la clause C 1 trouve dans Lit1: suppression de la clause C dans F
+Suppression de tous les atomes de Lit1 dans Atomes: [17, 11, 12, 25]
+F: []
+Phase omettable: F: []
+
+
+-------------------------------------------------- F :
+[]
+
+SATISFAISABLE
